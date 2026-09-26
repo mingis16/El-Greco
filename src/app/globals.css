@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/*
+ * El Greco Kafe - Resto design tokens, sampled from the logo and the venue.
+ *
+ *   mint     #4DDBC3  logo background
+ *   charcoal #1D1915  warm espresso black of the beams, lamps and chairs
+ *   wood     #CBA56B  honey-oak ceiling slats (#9D6B33 in shadow)
+ *   cream    #F5F3EE  warm stone floors and white walls
+ *
+ * Contrast rules: white on mint fails WCAG (1.7:1). Put charcoal text on
+ * mint (10.2:1), and use mint-700 for mint-coloured text on light
+ * backgrounds (5.0:1).
+ */
+@theme {
+  --color-mint-50: #edfcf8;
+  --color-mint-100: #d2f7ee;
+  --color-mint-200: #a7eedf;
+  --color-mint-300: #73e3cd;
+  --color-mint-400: #4ddbc3;
+  --color-mint-500: #2cc2a9;
+  --color-mint-600: #1f9e8a;
+  --color-mint-700: #137566;
+  --color-mint-800: #125e53;
+  --color-mint-900: #134d45;
+  --color-mint-950: #062f2a;
+
+  --color-charcoal-50: #f7f5f1;
+  --color-charcoal-100: #eeeae3;
+  --color-charcoal-200: #ddd7cd;
+  --color-charcoal-300: #bdb4a6;
+  --color-charcoal-400: #968b7c;
+  --color-charcoal-500: #736859;
+  --color-charcoal-600: #5c5248;
+  --color-charcoal-700: #3b342c;
+  --color-charcoal-800: #2a241e;
+  --color-charcoal-900: #1d1915;
+  --color-charcoal-950: #120f0c;
+
+  --color-wood-50: #faf5ec;
+  --color-wood-100: #f3e7d3;
+  --color-wood-200: #e6cfa8;
+  --color-wood-300: #d6b47e;
+  --color-wood-400: #cba56b;
+  --color-wood-500: #a87d45;
+  --color-wood-600: #8a5c2c;
+  --color-wood-700: #6e4a25;
+  --color-wood-800: #4f351b;
+  --color-wood-900: #36240f;
+
+  --color-cream: #f5f3ee;
+  --color-whatsapp: #25d366;
+
+  --color-success-50: #ecfdf3;
+  --color-success-700: #15803d;
+  --color-warning-50: #fff8eb;
+  --color-warning-700: #a15c07;
+  --color-danger-50: #fef2f2;
+  --color-danger-700: #b42318;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --radius-card: 1.25rem;
+  --shadow-card: 0 1px 2px rgb(29 25 21 / 0.05), 0 10px 28px -14px rgb(29 25 21 / 0.18);
+  --shadow-float: 0 14px 36px -10px rgb(29 25 21 / 0.4);
+}
+
+/* Semantic roles. Components use these, not raw palette steps, for surfaces and text. */
+:root {
+  --background: var(--color-cream);
+  --surface: #ffffff;
+  --ink: var(--color-charcoal-900);
+  --ink-muted: var(--color-charcoal-600);
+  --line: #e7e2d9;
+  --primary: var(--color-mint-400);
+  --primary-ink: var(--color-charcoal-900);
+  --primary-text: var(--color-mint-700);
+  --accent: var(--color-wood-400);
+
+  --header-height: 4.5rem;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-text: var(--primary-text);
+  --color-accent: var(--accent);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mint-500);
+    outline-offset: 2px;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Greek key (meander) band, echoing the lettering in the logo. */
+@utility meander {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='16' viewBox='0 0 32 16'%3E%3Cpath d='M0 15h14V1H4v10h6V5' fill='none' stroke='%234ddbc3' stroke-width='2'/%3E%3Cpath d='M16 15h14V1H20v10h6V5' fill='none' stroke='%234ddbc3' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 32px 16px;
+  height: 16px;
+}
+
+/* Eyebrow labels above section headings. */
+@utility eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
