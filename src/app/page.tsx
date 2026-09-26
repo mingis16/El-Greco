@@ -274,7 +274,7 @@ function Hero() {
           <QuickBooking />
           <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
             <Link href="/menu" className="inline-flex items-center gap-1.5 font-semibold text-cream hover:text-mint-300">
-              Explore the menu <ArrowRight aria-hidden className="size-4" />
+              Order online <ArrowRight aria-hidden className="size-4" />
             </Link>
             <a
               href={whatsappLink()}

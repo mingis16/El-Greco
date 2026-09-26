@@ -43,3 +43,6 @@ next-env.d.ts
 
 # local booking store (development only)
 /.data
+
+# Raw venue photos and video: local only (optimized copies live in src/assets/photos)
+/assets/raw-photos/

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useDeferredValue, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { Search, X } from "lucide-react";
 import { MenuItemCard } from "@/components/menu/menu-item-card";
+import { CartBar } from "@/components/ordering/cart-bar";
 import type { MenuCategory, MenuGroupId, MenuItem } from "@/lib/menu-types";
 import { MENU_GROUPS, isMenuGroupId, normalizeSearch } from "@/lib/menu-utils";
 import type { Photo } from "@/lib/photos";
@@ -245,6 +246,7 @@ export function MenuBrowser({
           ))}
         </div>
       )}
+      <CartBar categories={categories} />
     </div>
   );
 }

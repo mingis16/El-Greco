@@ -1,4 +1,5 @@
 import { Timer } from "lucide-react";
+import { AddToOrder } from "@/components/ordering/add-to-order";
 import type { MenuItem } from "@/lib/menu-types";
 import { formatPrice, priceLabel } from "@/lib/menu-utils";
 
@@ -42,8 +43,8 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
         </p>
       ))}
 
-      {(item.weight || item.prepMinutes || !item.available) && (
-        <div className="mt-auto flex flex-wrap items-center gap-2 pt-3 text-xs text-ink-muted">
+      <div className="mt-auto flex items-end justify-between gap-3 pt-3">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-ink-muted">
           {!item.available && (
             <span className="rounded-full bg-charcoal-900 px-2.5 py-1 font-semibold text-cream">
               Currently unavailable
@@ -61,7 +62,8 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
             </span>
           )}
         </div>
-      )}
+        {item.available && <AddToOrder item={item} />}
+      </div>
     </article>
   );
 }

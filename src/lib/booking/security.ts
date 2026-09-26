@@ -3,21 +3,32 @@ import { createHash, createHmac, randomInt, timingSafeEqual } from "node:crypto"
 // Booking references avoid look-alike characters (0/O, 1/I/L) so they can be
 // read over the phone. 31^8 ≈ 850 billion combinations.
 const REF_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
-export const REF_PATTERN = /^EG-[2-9A-HJKMNP-Z]{4}-[2-9A-HJKMNP-Z]{4}$/;
+/** "EG" = table booking or event, "OR" = online order. */
+export type RefPrefix = "EG" | "OR";
+const refPattern = (prefix: RefPrefix) => new RegExp(`^${prefix}-[2-9A-HJKMNP-Z]{4}-[2-9A-HJKMNP-Z]{4}$`);
+export const REF_PATTERN = refPattern("EG");
 
-export function generateRef() {
+export function generateRef(prefix: RefPrefix = "EG") {
   let code = "";
   for (let i = 0; i < 8; i++) code += REF_ALPHABET[randomInt(REF_ALPHABET.length)];
-  return `EG-${code.slice(0, 4)}-${code.slice(4)}`;
+  return `${prefix}-${code.slice(0, 4)}-${code.slice(4)}`;
 }
 
 /** Accepts "eg7kq4m2xp", "EG 7KQ4 M2XP" etc. and returns the canonical ref, or null. */
-export function normalizeRef(input: string) {
+export function normalizeRef(input: string, prefix: RefPrefix = "EG") {
   const compact = input.toUpperCase().replace(/[^0-9A-Z]/g, "");
-  const body = compact.startsWith("EG") ? compact.slice(2) : compact;
+  const body = compact.startsWith(prefix) ? compact.slice(2) : compact;
   if (body.length !== 8) return null;
-  const ref = `EG-${body.slice(0, 4)}-${body.slice(4)}`;
-  return REF_PATTERN.test(ref) ? ref : null;
+  const ref = `${prefix}-${body.slice(0, 4)}-${body.slice(4)}`;
+  return refPattern(prefix).test(ref) ? ref : null;
+}
+
+/** Which kind of reference this is, for pages that accept either. */
+export function refKind(input: string): RefPrefix | null {
+  const compact = input.toUpperCase().replace(/[^0-9A-Z]/g, "");
+  if (compact.startsWith("OR") && normalizeRef(input, "OR")) return "OR";
+  if (normalizeRef(input, "EG")) return "EG";
+  return null;
 }
 
 export class BookingConfigError extends Error {}

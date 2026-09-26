@@ -60,8 +60,8 @@ export default async function MenuPage() {
           </p>
           <h1 className="mt-3 text-4xl font-bold sm:text-5xl">Our menu</h1>
           <p className="mt-3 max-w-xl text-charcoal-200">
-            {itemCount} dishes and drinks across {menu.categories.length} sections, from brunch
-            and mezze to grills, seafood and cocktails.
+            {itemCount} dishes and drinks across {menu.categories.length} sections. Tap{" "}
+            <span className="font-semibold text-cream">Add</span> on anything to order to your table or for pickup.
           </p>
         </div>
       </section>

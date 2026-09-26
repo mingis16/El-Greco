@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ChevronLeft, ChevronRight, Phone, Search } from "lucide-react";
 import { StaffActions } from "@/components/booking/staff-actions";
-import { StaffLogin, StaffSignOut } from "@/components/booking/staff-login";
+import { StaffLogin } from "@/components/booking/staff-login";
+import { StaffTabs } from "@/components/booking/staff-tabs";
 import { StatusBadge } from "@/components/booking/status-badge";
 import { ACTIVE_STATUSES, occasionLabel, spaceLabel } from "@/lib/booking/config";
 import { formatPhone } from "@/lib/booking/phone";
@@ -49,6 +50,7 @@ async function StaffArea({ searchParams }: PageProps<"/staff">) {
 
   return (
     <div className="space-y-8">
+      <StaffTabs current="bookings" />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow text-primary-text">Staff area</p>
@@ -62,7 +64,7 @@ async function StaffArea({ searchParams }: PageProps<"/staff">) {
             <input
               id="find"
               name="ref"
-              placeholder="EG-XXXX-XXXX"
+              placeholder="EG- or OR- ref"
               autoComplete="off"
               className="h-10 w-40 rounded-full bg-surface px-4 font-mono text-sm uppercase ring-1 ring-line focus:ring-2 focus:ring-mint-500 focus:outline-none"
             />
@@ -70,7 +72,6 @@ async function StaffArea({ searchParams }: PageProps<"/staff">) {
               <Search className="size-4" />
             </button>
           </form>
-          <StaffSignOut />
         </div>
       </div>
 

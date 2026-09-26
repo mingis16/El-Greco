@@ -1,9 +1,12 @@
 import { redirect } from "next/navigation";
 import type { NextRequest } from "next/server";
-import { normalizeRef } from "@/lib/booking/security";
+import { normalizeRef, refKind } from "@/lib/booking/security";
 
-/** Staff reference search: /staff/find?ref=eg7kq4m2xp -> /staff/bookings/EG-7KQ4-M2XP */
+/** Staff reference search: EG-… opens the booking, OR-… opens the order. */
 export function GET(request: NextRequest) {
-  const ref = normalizeRef(request.nextUrl.searchParams.get("ref") ?? "");
+  const input = request.nextUrl.searchParams.get("ref") ?? "";
+  const kind = refKind(input);
+  if (kind === "OR") redirect(`/staff/orders/${normalizeRef(input, "OR")}`);
+  const ref = normalizeRef(input);
   redirect(ref ? `/staff/bookings/${ref}` : "/staff?notfound=1");
 }

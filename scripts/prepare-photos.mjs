@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Turns the raw WhatsApp photos in "public/el greco pics" into cleanly named,
+// Turns the raw WhatsApp photos in assets/raw-photos (kept locally, not in git
+// and never served publicly) into cleanly named,
 // optimized JPEGs in src/assets/photos (imported by src/lib/photos.ts), and
 // builds the logo files in public/brand from assets/brand/logo-source.jpg.
 //
@@ -17,7 +18,7 @@ sharp.concurrency(1);
 sharp.cache(false);
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SRC_DIR = path.join(ROOT, "public/el greco pics");
+const SRC_DIR = path.join(ROOT, "assets/raw-photos");
 const OUT_DIR = path.join(ROOT, "src/assets/photos");
 const BRAND_DIR = path.join(ROOT, "public/brand");
 const APP_DIR = path.join(ROOT, "src/app");

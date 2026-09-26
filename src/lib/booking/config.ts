@@ -1,19 +1,18 @@
 // Booking rules and options shared by the form, the API and the staff tools.
 //
-// PLACEHOLDERS: opening hours, seat capacity and the party-size thresholds
-// below are sensible defaults, not confirmed by the restaurant yet. Change
-// them here and every page and check picks them up.
+// Hours, capacity and the event threshold were confirmed by the restaurant on
+// 2026-09-26. Change them here and every page and check picks them up.
 
 export const BOOKING_RULES = {
   /** Sierra Leone is on GMT all year (no daylight saving). */
   timeZone: "Africa/Freetown",
-  /** PLACEHOLDER: first and last table times offered online, 24h "HH:MM". */
+  /** First and last table times offered online, 24h "HH:MM". */
   firstSeating: "08:00",
   lastSeating: "21:30",
   slotMinutes: 30,
   /** How long a table is assumed to be occupied. */
   diningMinutes: 120,
-  /** PLACEHOLDER: seats that can be booked online at the same time. */
+  /** Seats that can be booked online at the same time. */
   seatCapacity: 80,
   /** Tables up to this size are confirmed instantly when seats are free. */
   autoConfirmMaxParty: 6,

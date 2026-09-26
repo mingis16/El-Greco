@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { CalendarCheck, Menu as MenuIcon, X } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
+import { HeaderCart } from "@/components/ordering/header-cart";
 import { navLinks } from "@/lib/site";
 
 type NavVariant = "desktop" | "mobile";
@@ -67,7 +68,8 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <HeaderCart />
           <Link
             href="/reservations"
             className="hidden items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-ink transition hover:bg-mint-300 sm:inline-flex"

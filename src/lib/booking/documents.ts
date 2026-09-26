@@ -6,11 +6,11 @@ import type { Booking } from "@/lib/booking/types";
 import { qrModules, QR_MARGIN } from "@/lib/qr";
 import { site } from "@/lib/site";
 
-const INK = rgb(29 / 255, 25 / 255, 21 / 255);
-const MUTED = rgb(92 / 255, 82 / 255, 72 / 255);
-const MINT = rgb(77 / 255, 219 / 255, 195 / 255);
-const LINE = rgb(231 / 255, 226 / 255, 217 / 255);
-const TONE = {
+export const INK = rgb(29 / 255, 25 / 255, 21 / 255);
+export const MUTED = rgb(92 / 255, 82 / 255, 72 / 255);
+export const MINT = rgb(77 / 255, 219 / 255, 195 / 255);
+export const LINE = rgb(231 / 255, 226 / 255, 217 / 255);
+export const TONE = {
   success: rgb(21 / 255, 128 / 255, 61 / 255),
   warning: rgb(161 / 255, 92 / 255, 7 / 255),
   danger: rgb(180 / 255, 35 / 255, 24 / 255),
@@ -18,7 +18,7 @@ const TONE = {
 };
 
 /** Standard PDF fonts only cover Latin-1; replace anything else so names never crash the PDF. */
-function safe(font: PDFFont, text: string) {
+export function safe(font: PDFFont, text: string) {
   return [...text]
     .map((ch) => {
       try {
@@ -31,7 +31,7 @@ function safe(font: PDFFont, text: string) {
     .join("");
 }
 
-function wrap(font: PDFFont, text: string, size: number, maxWidth: number) {
+export function wrap(font: PDFFont, text: string, size: number, maxWidth: number) {
   const lines: string[] = [];
   let line = "";
   for (const word of text.split(" ")) {
@@ -47,7 +47,7 @@ function wrap(font: PDFFont, text: string, size: number, maxWidth: number) {
   return lines;
 }
 
-function drawQr(page: PDFPage, text: string, x: number, y: number, size: number) {
+export function drawQr(page: PDFPage, text: string, x: number, y: number, size: number) {
   const { size: n, isDark } = qrModules(text);
   const total = n + QR_MARGIN * 2;
   const cell = size / total;

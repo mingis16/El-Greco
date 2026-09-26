@@ -6,7 +6,8 @@ import { StaffActions } from "@/components/booking/staff-actions";
 import { StatusBadge } from "@/components/booking/status-badge";
 import { STATUS_COPY, extraLabel, occasionLabel, spaceLabel } from "@/lib/booking/config";
 import { formatPhone } from "@/lib/booking/phone";
-import { checkBookingToken, hashIdentifier, normalizeRef } from "@/lib/booking/security";
+import { OrderVerification } from "@/components/ordering/order-verification";
+import { checkBookingToken, hashIdentifier, normalizeRef, refKind } from "@/lib/booking/security";
 import { STAFF_ACTIONS, isForToday, staffActionsFor } from "@/lib/booking/service";
 import { isStaffRequest } from "@/lib/booking/staff-session";
 import { getBookingStore } from "@/lib/booking/store";
@@ -16,7 +17,7 @@ import { rateLimit } from "@/lib/rate-limit";
 import { headers } from "next/headers";
 
 export const metadata: Metadata = {
-  title: "Verify booking pass",
+  title: "Verify pass or receipt",
   robots: { index: false, follow: false },
 };
 
@@ -37,8 +38,10 @@ async function Verification({ params, searchParams }: PageProps<"/verify/[ref]">
   const limit = await rateLimit(`verify:${hashIdentifier(ip)}`, 40, 600);
   if (!limit.ok && !staff) return <Result tone="danger" title="Too many checks" body="Please wait a few minutes and scan again." />;
 
-  const ref = normalizeRef(rawRef);
   const token = typeof query.v === "string" ? query.v : null;
+  if (refKind(rawRef) === "OR") return <OrderVerification rawRef={rawRef} token={token} staff={staff} />;
+
+  const ref = normalizeRef(rawRef);
   const genuine = Boolean(ref && checkBookingToken("verify", ref, token));
   const booking = ref && (genuine || staff) ? await (await getBookingStore()).findByRef(ref) : null;
 

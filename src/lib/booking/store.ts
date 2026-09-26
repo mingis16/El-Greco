@@ -32,8 +32,13 @@ export interface BookingStore {
 
 let store: Promise<BookingStore> | null = null;
 
+/** The project URL isn't secret, so either name works; the service-role key must stay server-only. */
+export function supabaseUrl() {
+  return process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+}
+
 export function isSupabaseConfigured() {
-  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return Boolean(supabaseUrl() && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
 /**
@@ -45,7 +50,7 @@ export function getBookingStore(): Promise<BookingStore> {
   store ??= (async () => {
     if (isSupabaseConfigured()) {
       const { SupabaseBookingStore } = await import("@/lib/booking/store-supabase");
-      return new SupabaseBookingStore(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+      return new SupabaseBookingStore(supabaseUrl()!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
     }
     if (process.env.NODE_ENV === "production" && !process.env.ALLOW_FILE_BOOKING_STORE) {
       throw new BookingStoreUnavailableError();
@@ -61,6 +66,6 @@ export function getBookingStore(): Promise<BookingStore> {
 
 export class BookingStoreUnavailableError extends Error {
   constructor() {
-    super("Online booking needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in production.");
+    super("Online booking needs NEXT_PUBLIC_SUPABASE_URL (or SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY in production.");
   }
 }
