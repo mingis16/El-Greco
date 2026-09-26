@@ -148,7 +148,7 @@ export function AddToOrder({ item }: { item: MenuItem }) {
                         />
                         {o.name}
                       </span>
-                      <span className="text-sm text-ink-muted tabular-nums">+{formatPrice(o.price)}</span>
+                      <span className="text-sm text-ink-muted tabular-nums">{o.price > 0 ? `+${formatPrice(o.price)}` : "Free"}</span>
                     </label>
                   ))}
                 </div>

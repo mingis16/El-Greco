@@ -67,7 +67,7 @@ export async function renderReceiptPdf(order: Order, opts: { verifyUrl: string; 
 
   const HEADER = 96;
   const META = 118;
-  const height = HEADER + META + 24 + itemsHeight + 18 + totals.length * 16 + 22 + payment.length * 14 + 150;
+  const height = HEADER + META + 24 + itemsHeight + 18 + totals.length * 16 + 32 + payment.length * 14 + 160;
   const page = pdf.addPage([width, height]);
   const text = (value: string, x: number, y: number, size: number, font = regular, color = INK) =>
     page.drawText(safe(font, value), { x, y, size, font, color });
@@ -141,10 +141,21 @@ export async function renderReceiptPdf(order: Order, opts: { verifyUrl: string; 
     y -= 16;
   }
 
-  // Payment
+  text("Prices include all applicable taxes and service charges.", M, y + 4, 7, italic, MUTED);
+  y -= 10;
+
+  // Payment, with a stamp so paid and unpaid receipts can't be confused
   rule(y + 8, INK);
   y -= 8;
   text("PAYMENT", M, y, 8, bold, MUTED);
+  const stamp =
+    order.paymentStatus === "paid" ? { label: "PAID IN FULL", color: TONE.success }
+    : order.paymentStatus === "refunded" ? { label: "REFUNDED", color: TONE.neutral }
+    : order.status === "cancelled" ? { label: "CANCELLED", color: TONE.danger }
+    : { label: "BALANCE DUE", color: TONE.warning };
+  const stampWidth = bold.widthOfTextAtSize(stamp.label, 10) + 16;
+  page.drawRectangle({ x: width - M - stampWidth, y: y - 6, width: stampWidth, height: 20, borderColor: stamp.color, borderWidth: 1.5 });
+  text(stamp.label, width - M - stampWidth + 8, y, 10, bold, stamp.color);
   y -= 14;
   for (const [label, value] of payment) {
     const color = label === "Status" ? TONE[PAYMENT_STATUS_COPY[order.paymentStatus].tone] : INK;

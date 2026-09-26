@@ -73,10 +73,10 @@ requests. These live in `BOOKING_RULES` (`src/lib/booking/config.ts`).
 - **Daily order numbers.** Each order gets `#001`, `#002`… for the day, assigned
   atomically, plus a unique reference like `OR-7KQ4-M2XP`.
 - **Itemized receipt.** Lines with options, add-ons, notes and unit prices; subtotal,
-  any service charge or tax (`ORDER_RULES`, both 0 by default); payment method, status,
+  a note that prices include taxes and service (nothing is added on top); payment method, status,
   amount paid, balance due and reference; a downloadable PDF; and a QR stamp.
-- **Payments.** "Pay at the restaurant" always; Orange Money / Afrimoney when their
-  numbers are set. Guests enter the transaction ID; staff confirm it (or send it back
+- **Payments.** "Pay at the restaurant" is the default (the only option until mobile
+  money is enabled); Orange Money / Afrimoney appear only when their numbers are set. Guests enter the transaction ID; staff confirm it (or send it back
   as not found). Only staff can mark an order Paid, and double payments are refused.
 - **Kitchen flow.** Received, Preparing, Ready, Served/collected. Scanning a receipt
   that was already handed over warns staff, and a second hand-over is refused.
@@ -103,6 +103,10 @@ npm run menu:import
 
 This rewrites `src/data/menu.generated.ts`. Prices, spelling and availability are kept
 as published on oddmenu; names are title-cased for display.
+
+Restaurant-confirmed corrections live in `CATEGORY_FIXES` in the importer and are
+re-applied on every import (currently: pasta prices, and pasta sauces are free). Menu
+prices are final and include all taxes and service charges.
 
 ## Photos and logo
 

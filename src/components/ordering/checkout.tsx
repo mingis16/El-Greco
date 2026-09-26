@@ -346,6 +346,7 @@ export function Checkout({ categories, paymentMethods }: { categories: MenuCateg
               <dt>Total</dt>
               <dd className="tabular-nums">{formatPrice(serverTotal ?? totals.total)}</dd>
             </div>
+            <p className="text-xs text-ink-muted">Includes all taxes and service. Nothing is added at the till.</p>
           </dl>
           <div className="px-5 pb-5">
             <button

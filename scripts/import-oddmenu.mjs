@@ -57,6 +57,23 @@ const MENU_GROUP_FALLBACK = { food: "mains", desert: "desserts", dessert: "desse
 // Template text left over from oddmenu, not real descriptions.
 const PLACEHOLDER_DESCRIPTIONS = new Set(["the description for a second beer"]);
 
+// Price corrections confirmed by the restaurant (2026-09-26), keyed by display
+// category name then lower-cased item name. Applied on every import so a
+// re-sync from oddmenu can't bring back old values. `freeAddons` makes every
+// add-on option in the category free (pasta sauces are included).
+const CATEGORY_FIXES = {
+  pasta: {
+    prices: {
+      "chicken alfredo": 430,
+      "seafood pasta": 530,
+      "stir fried noodles": 480,
+      "bolognese pasta": 450,
+      arabiata: 340,
+    },
+    freeAddons: true,
+  },
+};
+
 const MINOR_WORDS = new Set(["a", "an", "and", "of", "on", "the", "with", "in", "de"]);
 const TOKEN_CASE = { cl: "cl", bbq: "BBQ" };
 
@@ -109,6 +126,28 @@ const toPrice = (value) => {
 };
 
 const byPosition = (a, b) => a.position - b.position;
+
+function applyFixes(categoryName, items) {
+  const fix = CATEGORY_FIXES[categoryName.toLowerCase()];
+  if (!fix) return;
+  const unmatched = new Set(Object.keys(fix.prices ?? {}));
+  for (const item of items) {
+    const key = item.name.toLowerCase();
+    const price = fix.prices?.[key];
+    if (price !== undefined) {
+      unmatched.delete(key);
+      if (item.price !== price) console.log(`  fix: ${item.name} price ${item.price} -> ${price}`);
+      item.price = price;
+    }
+    if (fix.freeAddons) {
+      for (const option of item.addons.flatMap((a) => a.options)) {
+        if (option.price !== 0) console.log(`  fix: ${item.name} add-on ${option.name} ${option.price} -> 0`);
+        option.price = 0;
+      }
+    }
+  }
+  if (unmatched.size) console.warn(`! Price fixes for ${categoryName} not applied (item renamed?): ${[...unmatched].join(", ")}`);
+}
 
 function transform(raw) {
   const menus = [...raw.menus].filter((m) => m.isVisible).sort(byPosition);
@@ -166,6 +205,7 @@ function transform(raw) {
           };
         });
 
+      applyFixes(name, items);
       categories.push({ id: category.id, slug: slugify(name), name, group, items });
     }
   }

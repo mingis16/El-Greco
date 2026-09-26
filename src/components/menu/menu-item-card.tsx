@@ -39,7 +39,8 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
           <span className="font-semibold text-ink">
             {addon.name} ({addon.selectType === "multi" ? "choose any" : "choose one"}):
           </span>{" "}
-          {addon.options.map((o) => `${o.name} +${formatPrice(o.price)}`).join(", ")}
+          {addon.options.map((o) => (o.price > 0 ? `${o.name} +${formatPrice(o.price)}` : o.name)).join(", ")}
+          {addon.options.every((o) => o.price === 0) && " (included)"}
         </p>
       ))}
 

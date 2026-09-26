@@ -11,8 +11,9 @@ export const ORDER_RULES = {
   maxLines: 30,
   maxQuantityPerLine: 20,
   /**
-   * Charges added on receipts, as fractions (0.1 = 10%). 0 hides the line.
-   * Menu prices are treated as final until the restaurant confirms otherwise.
+   * Menu prices are final: they include all applicable taxes and service
+   * charges (confirmed by the restaurant 2026-09-26), so nothing is added on
+   * top. Kept at 0; a non-zero rate would add a line to receipts.
    */
   serviceChargeRate: 0,
   taxRate: 0,

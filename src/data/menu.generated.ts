@@ -5,7 +5,7 @@ import type { MenuData } from "@/lib/menu-types";
 
 export const menuData: MenuData = {
   "source": "https://oddmenu.com/p/el-greco-seaview",
-  "importedAt": "2026-09-25T19:01:08.563Z",
+  "importedAt": "2026-09-26T21:51:43.215Z",
   "currency": "SLE",
   "place": {
     "name": "EL GRECO SEAVIEW",
@@ -717,22 +717,22 @@ export const menuData: MenuData = {
                 {
                   "id": "clxg96b351099678dnl66j32e179",
                   "name": "Ketchup",
-                  "price": 0.5
+                  "price": 0
                 },
                 {
                   "id": "clxg96b341099676dnl6jplswoxl",
                   "name": "Barbeque",
-                  "price": 0.5
+                  "price": 0
                 },
                 {
                   "id": "clxg96b351099680dnl6txirj4r8",
                   "name": "Mustard",
-                  "price": 0.5
+                  "price": 0
                 },
                 {
                   "id": "clxg96b371099682dnl64fmrmknd",
                   "name": "Sweet and Sour",
-                  "price": 0.5
+                  "price": 0
                 }
               ]
             }

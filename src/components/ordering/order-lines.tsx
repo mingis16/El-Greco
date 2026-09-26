@@ -59,6 +59,7 @@ export function OrderLines({ order, showPrices = true }: { order: Order; showPri
             <dt>Total</dt>
             <dd className="tabular-nums">{formatPrice(order.total)}</dd>
           </div>
+          <p className="text-xs text-ink-muted">Prices include all applicable taxes and service charges.</p>
         </dl>
       )}
     </div>

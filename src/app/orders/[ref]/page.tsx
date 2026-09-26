@@ -120,6 +120,25 @@ async function Receipt({ params, searchParams }: PageProps<"/orders/[ref]">) {
         </div>
 
         <div className="border-t border-line bg-background/60 p-6">
+          {order.paymentStatus === "paid" ? (
+            <div className="mb-4 flex items-center gap-3 rounded-xl border-2 border-success-700 px-4 py-3 text-success-700">
+              <CheckCircle2 aria-hidden className="size-6 shrink-0" />
+              <div>
+                <p className="font-display text-lg font-bold tracking-widest">PAID IN FULL</p>
+                <p className="text-xs font-semibold">
+                  {formatPrice(order.amountPaid)} by {paymentMethodLabel(order.settledWith ?? order.paymentMethod)}
+                  {order.paidAt ? ` · ${formatTimestamp(order.paidAt)}` : ""}
+                </p>
+              </div>
+            </div>
+          ) : order.paymentStatus === "refunded" ? (
+            <p className="mb-4 rounded-xl bg-charcoal-100 px-4 py-3 text-sm font-semibold">This order was refunded.</p>
+          ) : order.status !== "cancelled" ? (
+            <p className="mb-4 rounded-xl bg-warning-50 px-4 py-3 text-sm font-semibold text-warning-700 ring-1 ring-warning-700/20">
+              Balance due {formatPrice(balance)}: pay {order.fulfilment === "dine_in" ? "your server" : "at the counter when you collect"}. This
+              receipt updates to Paid as soon as it&apos;s recorded.
+            </p>
+          ) : null}
           <p className="text-xs font-semibold tracking-[0.2em] text-ink-muted uppercase">Payment</p>
           <dl className="mt-3 grid grid-cols-2 gap-y-2 text-sm">
             <dt className="text-ink-muted">Status</dt>
